@@ -1,0 +1,167 @@
+连接到CentOS服务器： 
+sorry@sorry-faith:~$ ssh root@172.16.112.130 
+password: 需要填写root用户密码； 
+root@172.16.112.130's password: 
+Last login: Sat Dec 19 03:11:26 2009 from 172.16.112.1 
+[root@localhost ~]# 
+安装apache,mysql,php以及php连接mysql其组件： 
+[root@localhost ~]# yum -y install httpd php mysql mysql-server php-mysql 
+[root@localhost ~]# 安装过程忽略； 
+安装php插件： 
+[root@localhost ~]# yum install php-* 
+[root@localhost ~]# 安装过程忽略； 
+安装图形支持： 
+[root@localhost ~]# yum install php-gd 
+[root@localhost ~]# 安装过程忽略； 
+测试安装环境： 
+[root@localhost ~]# rpm -qa |grep mysql 
+[root@localhost ~]# 过程忽略； 
+[root@localhost ~]# rpm -qa |grep httpd 
+[root@localhost ~]# 过程忽略； 
+[root@localhost ~]# rpm -qa |grep php 
+[root@localhost ~]# 过程忽略； 
+配置开机启动服务： 
+配置apache开机启动； 
+[root@localhost ~]# /sbin/chkconfig httpd on 
+[root@localhost ~]# 过程忽略； 
+添加mysql服务； 
+[root@localhost ~]# /sbin/chkconfig --add mysqld 
+[root@localhost ~]# 过程忽略； 
+添加mysql开机启动； 
+[root@localhost ~]# /sbin/chkconfig mysqld on 
+[root@localhost ~]# 过程忽略； 
+启动httpd服务； 
+[root@localhost ~]# /sbin/service httpd start 
+[root@localhost ~]# 过程忽略； 
+启动mysql服务； 
+[root@localhost ~]# /sbin/service mysqld start 
+[root@localhost ~]# 过程忽略； 
+设置mysql密码： 
+pw123456修改为你要修改的密码； 
+[root@localhost ~]# mysqladmin -u root password 'pw123456' 
+[root@localhost ~]# 过程忽略； 
+登录到mysql： 
+root为你的用户名； 
+[root@localhost ~]# mysql -u root -p 
+password: 需要填写root用户密码； 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g. 
+Your MySQL connection id is 170 
+Server version: 5.0.77 Source distribution 
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer. 
+mysql> 
+删除test测试库； 
+mysql> DROP DATABASE test; 
+删除匿名帐户； 
+mysql> DELETE FROM mysql.user WHERE user = ''; 
+重载权限； 
+mysql> FLUSH PRIVILEGES; 
+退出mysql； 
+mysql> exit 
+Bye 
+进入默认web目录： 
+[root@localhost ~]# cd /var/www/html 
+vi编辑创建php测试文件： 
+[root@localhost html]# vim info.php 
+进入vi编辑器： 
+按键“i“进入编辑模式，输入； 
+<?php 
+phpinfo(); 
+?> 
+按Esc退出编辑模式后输入“：wq！”退出编辑模式； 
+查看本机IP； 
+[root@localhost html]# ifconfig 
+[root@localhost html]# 过程忽略； 
+得到IP后在浏览器输入：http://IP/info.php 
+php、mysql、apache已经安装配置成功。 
+
+安装dedecms： 
+下载：dedecms 
+为方便输入，修改文件名； 
+sorry@sorry-faith:~/桌面$ mv DedecmsV55-GBK-Final.tar.gz dede.tar.gz 
+使用scp命令从本地复制文件到服务器内； 
+sorry@sorry-faith:~/桌面$ scp dede.tar.gz root@172.16.112.130:/var/www/ 
+password: 需要填写root用户密码； 
+root@172.16.112.130's password: 
+复制进度，100％为完成； 
+dede.tar.gz                                   100% 4527KB   4.4MB/s   00:01 
+进入www目录查看我们刚才复制上去的东西； 
+[root@localhost ~]# cd /var/www/ 
+ls命令车看目录下文件； 
+[root@localhost www]# ls 
+可以看到，我们传上来的dede.tar.gz存在本目录； 
+cgi-bin  dede.tar.gz  error  html  icons  manual  usage 
+解压dede.tar.gz文件； 
+[root@localhost www]# tar -zxvf dede.tar.gz 
+[root@localhost www]# 过程忽略； 
+使用ls命令查看解压后目录； 
+[root@localhost www]# ls 
+解压后名字为DedeCmsV55-GBK-Final目录； 
+cgi-bin  DedeCmsV55-GBK-Final  dede.tar.gz  error  html  icons  manual  usage 
+进入DedeCmsV55-GBK-Final目录； 
+[root@localhost www]# cd DedeCmsV55-GBK-Final 
+查看目录下文件； 
+[root@localhost DedeCmsV55-GBK-Final]# ls 
+我们只需要uploads目录，因为他为安装目录文件； 
+修改uploads目录名，修改为html； 
+[root@localhost DedeCmsV55-GBK-Final]# mv uploads html 
+复制目录到www目录下； 
+[root@localhost DedeCmsV55-GBK-Final]# cp -rf html /var/www 
+因为默认的html目录存在，是否覆盖？我们回答“y“然后回车，确认覆盖； 
+cp：是否覆盖“/var/www/html/a/index.html”? 
+退回到www目录； 
+[root@localhost DedeCmsV55-GBK-Final]# cd ../ 
+查看目录下文件： 
+[root@localhost www]# ls 
+cgi-bin               dede.tar.gz  html   icons   usage 
+DedeCmsV55-GBK-Final  error        manual 
+现在我们要DedeCmsV55-GBK-Final目录以及dede.tar.gz文件无用了，我们删除他； 
+[root@localhost www]# rm -rf DedeCmsV55-GBK-Final 
+删除目录需要－rf，删除文件时候不需要； 
+[root@localhost www]# rm dede.tar.gz 
+询问我们继续回答“y“进行确认； 
+rm：是否删除 一般文件 “dede.tar.gz”? y 
+进入html目录； 
+[root@localhost www]# cd html 
+在浏览器输入：http://IP地址/ 
+进入了dedecms安装，进入下一步，但是提示我们的目录没有可写权限，在linux下目录权限要求比较高，那么我们给目录权限； 
+对plus目录给予777权限，可写、可读权限； 
+[root@localhost html]# chmod 777 plus 
+但是一个一个给权限，需要下层目录权限等等会很麻烦，那么我们就一次给全部权限，在linux下的“＊”为通配符； 
+[root@localhost html]# chmod 777 -R ./* 
+好了，我们给足了所有权限，我们进行安装下一步，需要填写数据库，我们还没有创建数据库！那么我们就去创建一个数据库； 
+[root@localhost www]# mysql -u root -p 
+password: 需要填写root用户密码； 
+Enter password: 
+进入mysql成功； 
+查看存在的mysql数据库； 
+mysql> SHOW DATABASES; 
++--------------------+ 
+| Database           | 
++--------------------+ 
+| information_schema | 
+| mysql              | 
+| nison_oian         | 
++--------------------+ 
+3 rows in set (0.01 sec) 
+我们创建一个数据库，数据库名为：dede； 
+mysql> CREATE DATABASE dede; 
+Query OK, 1 row affected (0.00 sec) 
+我们在查看存在的数据库，看看我们新创建的数据库是否存在； 
+mysql> SHOW DATABASES; 
++--------------------+ 
+| Database           | 
++--------------------+ 
+| information_schema | 
+| dede               | 
+| mysql              | 
+| nison_oian         | 
++--------------------+ 
+4 rows in set (0.00 sec) 
+好了，我们创建成功，存在dede数据库！但是有些朋友有自己的数据库需要导入，那么我们就尝试以下； 
+首先我们需要进入dede数据库，否则导入会默认不存在数据库造成导入失败！ 
+mysql> use dede 
+Database changed 
+我们使用source命令进行导入； 
+mysql> source /绝对路径/test.sql 
+好了，这样就可以完整的导入数据库了！如果没有的掠过，进行dede安装就可以了！这篇东西也就到这里完成了！
