@@ -1,0 +1,170 @@
+A.1 安装和初始化
+配置全局用户和电子邮件地址
+git config --global user.name "Somebody"
+git config --global user.email "sb@sb.com"
+
+为特定的版本库配置用户名和电子邮件地址
+注：你可以为每个版本库单独设置用户名和邮件地址。使得用户可以在不同项目中使用不同的用户名和／或不同的邮件地址。
+
+cd /path/to/repo
+git config --global user.name "Tom"
+git config --global user.email "Tom@mc.com"
+
+在命令行中使用不同颜色显示不同内容
+git config --global color.ui "auto"
+
+初始化新版本库
+mkdir /path/to/repo
+cd /path/to/repo
+git init
+
+git add .
+git commit -m "initial import"
+
+克隆版本库
+git clone <repository url>
+
+将目录中的内容纳入git版本控制
+cd /path/to/existing/directory
+git init
+git add .
+git commit -m "initial import of some project"
+
+在本地版本库中设置远程版本库的别名
+git remote add <remote repository> <repository url>
+
+A.2 日常操作
+添加新文件或暂存已有文件上的改动，然后提交
+git add <some file>
+git commit -m "some message"
+
+暂存已有文件上的部分修改
+git add -p [<some file> [<some file> [and so on]]]
+使用交互方式添加文件
+git add -i
+暂存已纳入Git版本控制之下的文件的修改
+git add -u [<some path> [<some path>]]
+提交已纳入Git版本控制之下的文件的所有修改
+git commit -m "some message" -a
+清除工作目录树中的修改
+git checkout HEAD <some file> [<some file>]
+取消已暂存但尚未提交的修改的暂存标识
+git reset HEAD <some file> [<some file>]
+修复上一次提交中的问题
+注：改动相关文件，并暂存....
+git commit -m "some message" --amend
+修复上一次提交中的问题，并复用上次的提交注释
+git commit -C HEAD --amend
+
+A.3 分支
+列出本地分支
+git branch
+列出远程分支
+git branh -r
+列出所有分支
+git branch -a
+基于当前分支（的末梢）创建新分支
+git branch <new branch>
+检出另一条分支
+git checkout <some branch>
+基于当前分支创建新分支，同时检出该分支
+git checkout -b <new branch>
+基于另一个起点，创建新分支
+git branch <new branch> <start point>
+创建同名新分支，覆盖已有分支
+git branch -f <some existing branch> [<start point>]
+移动或重命名分支
+git checkout -m <existing branch name> <new branch name>
+git checkout -M <existing branch name> <new branch name>
+把另一条分支合并到当前分支
+git merge <some branch>
+合并，但不提交
+git merge --no-commit <some branch>
+拣选合并，并提交
+git cherr-pick <commit name>
+拣选合并，并不提交
+git cherr-pick -n <commit name>
+把一条分支上的内容压合到另一条分支（上的一个提交）
+git merge --squash <some branch>
+删除分支
+git branch -d <branch to delete>
+git branch -D <branch to delete>
+
+A.4历史
+显示全部历史记录
+git log
+显示版本历史，以及版本间的内容差异
+git log -p
+只显示最近一个提交
+git log -1
+显示最近的20个提交，以及版本间的内容差异
+git log -20 -p
+显示最近6小时的提交
+git log --since="6 hours"
+显示两天之前的提交
+git log --before="2 days"
+显示比HEAD（当前检出分支的末梢）早3个提交的那个提交
+git log -1 HEAD~3
+git log -1 HEAD^^^
+git log -1 HEAD~1^^
+显示两个版本之间的提交
+git log <start point>...<end point>
+显示历史，每个提交显示一行，包括提交注释的第一行
+git log --pretty=oneline
+显示改动行数统计
+git log --stat
+显示改动文件的名称和状态
+git log --name-status
+显示当前工作目录树和暂存区间的差别
+git diff
+显示暂存区和版本库间的差别
+git diff --cached
+显示工作目录树和版本库间的差别
+git diff HEAD
+显示工作目录树与版本库中某次提交版本之间的差别
+git diff <start point>
+显示版本库中两个版本之间的差别
+git diff <start point> <end point>
+显示差别的相关统计
+git diff --stat <start point> <end point>
+显示文件中各个部分的修改者及相关提交信息
+git blame <some file>
+git blame -M <some file>
+显示文件中各部分的修改者及相关提交信息，包括在文件间移动内容方面的情况
+git blame -C -C <some file>
+显示历史时，显示复制和粘帖信息
+git log -C -C -p -1 <some point>
+
+A.5远程版本库
+克隆远程版本库
+git clone <some repository>
+克隆远程版本库，但只下载其中最近200个提交的历史记录
+git clone --depth 200 <some repository>
+在本地版本库中设置远程版本库的别名
+git remote add <remote repository> <repository url>
+显示远程分支
+git branch -r
+基于远程分支创建本地分支
+git branch <new branch> <remote branch>
+基于远程标签创建本地分支
+git branch <new branch> <remote tag>
+从别名为 origin 的远程版本库中取来修改变化，但不合并到本地分支
+git fetch
+从任意的远程版本库中取来修改变化，但不合并到本地分支
+git fetch <remote repository>
+从任意的远程版本库中取来修改变化，但合并到当前检出的本地分支
+git pull <remote repository>
+从别名为 origin 的远程版本库中取来修改变化，并合并到当前检出的本地分支
+git pull
+把修改变化从本地分支推入远程版本库
+git push <remote repository> <local branch>:<remote branch>
+把修改变化从本地分支推入远程分支版本库中同名分支
+git push <remote repository> <local branch>
+把修改变化推入别名为 origin 的远程版本库
+git push
+在远程版本库中删除分支
+git push <remote repository> :<remote branch>
+在本地版本库中删除所有远程版本库中已不存在的分支
+git remote prune <remote repository>
+在本地版本库中删除某个远程版本库的简称，以及该远程版本库相关的分支
+git remote rm <remote repository>
