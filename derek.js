@@ -43,3 +43,4 @@ function getArrOfOur(val, arr){
 
 	return newarr;
 }
+//you like ....
