@@ -1,0 +1,20 @@
+mac下brew安装mysql
+
+1: brew install mysql
+------接着你如果执行 mysql -uroot将会呈现my.sock等异常信息
+
+所以我们应当做的是以下的操作
+a: 查看安装信息
+--- brew info mysql
+b: 然后就须要你进行一些体系数据安装的操纵
+--- 1: unset TMPDIR
+--- 2: mysql_install_db --verbose --user='whoami' --basedir='(brew --prefix mysql)' --datadir=/usr/local/var/mysql --tmpdir=/tmp
+c: 数据库启动
+--- mysql.server start
+d: 执行连接数据库
+--- mysql -uroot
+e: 修改密码
+--- mysqladmin -uroot -password 'xxxxx'
+如果是change password
+--- mysqladmin -uroot -p 'oldpassword' password 'xxx'
+
